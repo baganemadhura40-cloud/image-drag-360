@@ -1,1 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Manual 360 Image Rotation</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  img {
+    width: 300px;
+    cursor: grab;
+    transform-origin: center center;
+  }
+
+  img:active {
+    cursor: grabbing;
+  }
+</style>
+</head>
+
+<body>
+
+<img src="image.png" id="rotatable">
+
+<script>
+  const img = document.getElementById("rotatable");
+
+  let isDragging = false;
+  let startX = 0;
+  let rotation = 0;
+
+  function startDrag(x) {
+    isDragging = true;
+    startX = x;
+  }
+
+  function moveDrag(x) {
+    if (!isDragging) return;
+    const delta = x - startX;
+    rotation += delta * 0.5;
+    img.style.transform = `rotateY(${rotation}deg)`;
+    startX = x;
+  }
+
+  function endDrag() {
+    isDragging = false;
+  }
+
+  // Mouse events
+  img.addEventListener("mousedown", e => startDrag(e.clientX));
+  window.addEventListener("mousemove", e => moveDrag(e.clientX));
+  window.addEventListener("mouseup", endDrag);
+
+  // Touch events (mobile)
+  img.addEventListener("touchstart", e => startDrag(e.touches[0].clientX));
+  window.addEventListener("touchmove", e => moveDrag(e.touches[0].clientX));
+  window.addEventListener("touchend", endDrag);
+</script>
+
+</body>
+</html>
 
